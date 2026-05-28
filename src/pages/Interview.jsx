@@ -102,7 +102,7 @@ function Interview() {
         const response =
           await axios.post(
 
-            "http://localhost:5000/api/results/save-result",
+            "https://ai-interview-platform-b3py.onrender.com/api/results/save-result",
 
             {
 

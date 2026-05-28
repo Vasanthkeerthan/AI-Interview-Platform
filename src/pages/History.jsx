@@ -38,7 +38,7 @@ function History() {
         const response =
           await axios.get(
 
-`http://localhost:5000/api/results/history/${email}`
+`https://ai-interview-platform-b3py.onrender.com/api/results/history/${email}`
 
           );
 

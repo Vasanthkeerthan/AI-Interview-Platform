@@ -84,7 +84,7 @@ function Dashboard() {
 
           const response =
             await axios.get(
-              `http://localhost:5000/api/results/history/${user.email}`
+              `https://ai-interview-platform-b3py.onrender.com/api/results/history/${user.email}`
             );
 
           const interviews =
@@ -160,7 +160,7 @@ function Dashboard() {
         const response =
           await axios.post(
 
-            "http://localhost:5000/api/resume/upload",
+            "https://ai-interview-platform-b3py.onrender.com/api/resume/upload",
 
             formData
           );
@@ -237,7 +237,7 @@ function Dashboard() {
         const response =
           await axios.post(
 
-            "http://localhost:5000/api/ai/generate-questions",
+            "https://ai-interview-platform-b3py.onrender.com/api/ai/generate-questions",
 
             {
 

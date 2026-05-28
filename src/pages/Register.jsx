@@ -21,7 +21,7 @@ function Register() {
     try {
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://ai-interview-platform-b3py.onrender.com/api/auth/register",
         {
           name,
           email,
