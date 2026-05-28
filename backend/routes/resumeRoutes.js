@@ -1,65 +1,54 @@
 const express = require("express");
-
 const multer = require("multer");
-
 const path = require("path");
-
 const fs = require("fs");
-
 const pdfParse = require("pdf-parse");
 
 const router = express.Router();
 
 /* ================= STORAGE ================= */
 
-const storage =
-  multer.diskStorage({
+const storage = multer.diskStorage({
 
-    destination:
-      (req, file, cb) => {
+  destination: function (req, file, cb) {
 
-        cb(null, "uploads/");
-      },
+    // RENDER SAFE TEMP FOLDER
 
-    filename:
-      (req, file, cb) => {
+    cb(null, "/tmp");
 
-        cb(
+  },
 
-          null,
+  filename: function (req, file, cb) {
 
-          Date.now() +
-            path.extname(
-              file.originalname
-            )
-        );
-      },
-  });
+    cb(
+
+      null,
+
+      Date.now() +
+      path.extname(file.originalname)
+
+    );
+  },
+});
 
 /* ================= PDF FILTER ================= */
 
-const fileFilter =
-  (req, file, cb) => {
+const fileFilter = (req, file, cb) => {
 
-    if (
-      file.mimetype ===
-      "application/pdf"
-    ) {
+  if (file.mimetype === "application/pdf") {
 
-      cb(null, true);
+    cb(null, true);
 
-    } else {
+  } else {
 
-      cb(
+    cb(
 
-        new Error(
-          "Only PDF resumes allowed"
-        ),
+      new Error("Only PDF resumes allowed"),
 
-        false
-      );
-    }
-  };
+      false
+    );
+  }
+};
 
 /* ================= MULTER ================= */
 
@@ -90,30 +79,26 @@ router.post(
 
           success: false,
 
-          message:
-            "No resume uploaded",
+          message: "No resume uploaded",
         });
       }
 
       /* ================= READ PDF ================= */
 
-      const dataBuffer =
-        fs.readFileSync(
-          req.file.path
-        );
+      const dataBuffer = fs.readFileSync(
+        req.file.path
+      );
 
-      const pdfData =
-        await pdfParse(
-          dataBuffer
-        );
+      const pdfData = await pdfParse(
+        dataBuffer
+      );
 
       /* CLEAN RESUME TEXT */
 
-      const cleanedText =
-        pdfData.text
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 3000);
+      const cleanedText = pdfData.text
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 3000);
 
       /* ================= RESPONSE ================= */
 
@@ -121,14 +106,11 @@ router.post(
 
         success: true,
 
-        filePath:
-          req.file.path,
+        filePath: req.file.path,
 
-        fileName:
-          req.file.filename,
+        fileName: req.file.filename,
 
-        resumeText:
-          cleanedText,
+        resumeText: cleanedText,
       });
 
     } catch (error) {
@@ -139,8 +121,7 @@ router.post(
 
         success: false,
 
-        message:
-          "Resume upload failed",
+        message: "Resume upload failed",
       });
     }
   }
